@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -26,6 +25,7 @@ class MainActivity : AppCompatActivity() {
                     recycler_view.adapter = RecyclerViewAdapter(it).apply {
                         onItemClick = {
                             println(it.toString())
+                            // TODO: detail activity
                         }
                     }
                 else
@@ -39,16 +39,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                val layoutManager = recyclerView.layoutManager as GridLayoutManager
-
-                if (layoutManager.findLastVisibleItemPosition() == layoutManager.itemCount - 1)
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
                     viewModel.next?.let {
                         progress_bar.visibility = View.VISIBLE
                         viewModel.loadCharacters(recyclerView.context, it)
                     }
-
-                super.onScrolled(recyclerView, dx, dy)
+                }
             }
         })
     }
