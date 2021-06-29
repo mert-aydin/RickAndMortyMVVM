@@ -1,6 +1,7 @@
 package com.mertaydin.rickandmortymvvm
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -17,18 +18,25 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this, ViewModelFactory()).get(CharacterViewModel::class.java)
 
-        viewModel.loadCharacters(this)
+        viewModel.apply {
+            loadCharacters(this@MainActivity)
 
-        viewModel.list.observe(this, {
-            if (recycler_view.adapter == null)
-                recycler_view.adapter = RecyclerViewAdapter(it).apply {
-                    onItemClick = {
-                        println(it.toString())
+            list.observe(this@MainActivity, {
+                if (recycler_view.adapter == null)
+                    recycler_view.adapter = RecyclerViewAdapter(it).apply {
+                        onItemClick = {
+                            println(it.toString())
+                        }
                     }
-                }
-            else
-                recycler_view.adapter!!.notifyItemRangeInserted(viewModel.list.value!!.size, 20)
-        })
+                else
+                    recycler_view.adapter!!.notifyItemRangeInserted(viewModel.list.value!!.size, 20)
+                progress_bar.visibility = View.GONE
+            })
+
+            shouldFinish.observe(this@MainActivity, {
+                if (it) finish()
+            })
+        }
 
         recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -36,6 +44,7 @@ class MainActivity : AppCompatActivity() {
 
                 if (layoutManager.findLastVisibleItemPosition() == layoutManager.itemCount - 1)
                     viewModel.next?.let {
+                        progress_bar.visibility = View.VISIBLE
                         viewModel.loadCharacters(recyclerView.context, it)
                     }
 

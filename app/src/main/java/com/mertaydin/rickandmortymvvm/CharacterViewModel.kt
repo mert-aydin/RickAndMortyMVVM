@@ -1,6 +1,7 @@
 package com.mertaydin.rickandmortymvvm
 
 import android.content.Context
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.android.volley.Request
@@ -12,6 +13,7 @@ class CharacterViewModel : ViewModel() {
 
     var next: String? = null
     var list = MutableLiveData<ArrayList<CharacterModel>>()
+    var shouldFinish = MutableLiveData<Boolean>()
 
     fun loadCharacters(context: Context, url: String = "https://rickandmortyapi.com/api/character") {
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, url, {
@@ -23,7 +25,17 @@ class CharacterViewModel : ViewModel() {
             }
             list.value = temp
         }, {
-
+            AlertDialog.Builder(context).apply {
+                setTitle("Failed to load characters")
+                setMessage(it.localizedMessage)
+                setPositiveButton("Retry") { _, _ ->
+                    loadCharacters(context, url)
+                }
+                setNegativeButton("Close") { _, _ ->
+                    shouldFinish.value = true
+                }
+                show()
+            }
         }))
     }
 
