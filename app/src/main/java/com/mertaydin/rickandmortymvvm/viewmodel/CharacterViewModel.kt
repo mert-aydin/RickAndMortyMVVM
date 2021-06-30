@@ -1,4 +1,4 @@
-package com.mertaydin.rickandmortymvvm
+package com.mertaydin.rickandmortymvvm.viewmodel
 
 import android.content.Context
 import androidx.appcompat.app.AlertDialog
@@ -8,6 +8,8 @@ import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
+import com.mertaydin.rickandmortymvvm.model.CharacterModelHolder
+import com.mertaydin.rickandmortymvvm.model.CharacterModel
 
 class CharacterViewModel : ViewModel() {
 

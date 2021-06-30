@@ -1,10 +1,14 @@
-package com.mertaydin.rickandmortymvvm
+package com.mertaydin.rickandmortymvvm.activity
 
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.mertaydin.rickandmortymvvm.R
+import com.mertaydin.rickandmortymvvm.adapter.RecyclerViewAdapter
+import com.mertaydin.rickandmortymvvm.util.ViewModelFactory
+import com.mertaydin.rickandmortymvvm.viewmodel.CharacterViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {

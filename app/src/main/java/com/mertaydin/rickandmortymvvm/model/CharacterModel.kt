@@ -1,9 +1,4 @@
-package com.mertaydin.rickandmortymvvm
-
-data class CharacterModelHolder(var info: InfoModel?,
-                                var results: ArrayList<CharacterModel>?)
-
-data class InfoModel(var next: String?)
+package com.mertaydin.rickandmortymvvm.model
 
 data class CharacterModel(var id: Int?,
                           var name: String?,
