@@ -1,13 +1,12 @@
 package com.mertaydin.rickandmortymvvm.activity
 
-import android.animation.AnimatorSet
-import android.animation.ValueAnimator
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.TransitionManager
 import com.bumptech.glide.Glide
 import com.mertaydin.rickandmortymvvm.R
 import com.mertaydin.rickandmortymvvm.adapter.EpisodeRecyclerViewAdapter
@@ -16,6 +15,7 @@ import com.mertaydin.rickandmortymvvm.util.Constants.Companion.CHARACTER_KEY
 import com.mertaydin.rickandmortymvvm.util.EpisodeViewModelFactory
 import com.mertaydin.rickandmortymvvm.viewmodel.EpisodeViewModel
 import kotlinx.android.synthetic.main.activity_character_detail.*
+import java.util.*
 
 class CharacterDetailActivity : AppCompatActivity() {
 
@@ -53,13 +53,7 @@ class CharacterDetailActivity : AppCompatActivity() {
             }
 
             isCollapsed = !isCollapsed
-            if (isCollapsed) {
-                episodes_recycler_view.collapse()
-                it.animate().rotation(0F).start()
-            } else {
-                episodes_recycler_view.expand()
-                it.animate().rotation(180F).start()
-            }
+            episodes_recycler_view.toggle()
         }
     }
 
@@ -70,27 +64,10 @@ class CharacterDetailActivity : AppCompatActivity() {
         character_gender.text = character.gender
     }
 
-    private fun RecyclerView.collapse() {
-        AnimatorSet().apply {
-            play(ValueAnimator.ofInt(layoutParams.height, 1).setDuration(1000).apply {
-                addUpdateListener {
-                    layoutParams.height = it.animatedValue.toString().toInt()
-                    requestLayout()
-                }
-            })
-            start()
-        }
-    }
+    private fun RecyclerView.toggle() {
+        TransitionManager.beginDelayedTransition(this, null)
+        updateLayoutParams { height = if (isCollapsed) 1 else 0 }
 
-    private fun RecyclerView.expand() {
-        AnimatorSet().apply {
-            play(ValueAnimator.ofInt(layoutParams.height, WRAP_CONTENT).setDuration(1000).apply {
-                addUpdateListener {
-                    layoutParams.height = it.animatedValue.toString().toInt()
-                    requestLayout()
-                }
-            })
-            start()
-        }
+        arrow.animate().rotation(if (isCollapsed) 180F else 0F).start()
     }
 }
