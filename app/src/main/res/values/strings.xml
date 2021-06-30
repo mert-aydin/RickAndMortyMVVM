@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">RickAndMortyMVVM</string>
+    <string name="character_fetch_failed">Failed to load characters</string>
+    <string name="episode_fetch_failed">Failed to load episodes</string>
+    <string name="retry">Retry</string>
+    <string name="close">Close</string>
+    <string name="characters">Characters</string>
+    <string name="status_and_species">%1$s, %2$s</string>
+    <string name="episodes">Episodes</string>
+    <string name="episode_name">%1$s (%2$s - %3$s)</string>
 </resources>

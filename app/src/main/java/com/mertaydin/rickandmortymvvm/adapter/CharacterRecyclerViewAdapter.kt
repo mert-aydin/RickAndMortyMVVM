@@ -7,13 +7,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.mertaydin.rickandmortymvvm.R
 import com.mertaydin.rickandmortymvvm.model.CharacterModel
-import kotlinx.android.synthetic.main.recycler_view_item.view.*
+import kotlinx.android.synthetic.main.character_recycler_view_item.view.*
 
-class RecyclerViewAdapter(private val dataSet: ArrayList<CharacterModel>) : RecyclerView.Adapter<RecyclerViewAdapter.CharacterViewHolder>() {
+class CharacterRecyclerViewAdapter(private val dataSet: ArrayList<CharacterModel>) : RecyclerView.Adapter<CharacterRecyclerViewAdapter.CharacterViewHolder>() {
 
     var onItemClick: ((CharacterModel) -> Unit)? = null
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int) = CharacterViewHolder(LayoutInflater.from(viewGroup.context).inflate(R.layout.recycler_view_item, viewGroup, false))
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int) = CharacterViewHolder(LayoutInflater.from(viewGroup.context).inflate(R.layout.character_recycler_view_item, viewGroup, false))
 
     override fun onBindViewHolder(viewHolder: CharacterViewHolder, position: Int) {
         viewHolder.bind(dataSet[position])

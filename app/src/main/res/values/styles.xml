@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="rounded_corners" parent="">
+    <style name="rounded_corners">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">8dp</item>
+    </style>
+
+    <style name="circular_80">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">40dp</item>
     </style>
 
     <style name="text_14">
