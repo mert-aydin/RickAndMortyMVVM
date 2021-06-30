@@ -19,7 +19,10 @@ class EpisodeViewModel : ViewModel() {
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, url, {
             val episodeModel: EpisodeModel = Gson().fromJson(it, EpisodeModel::class.java)
             val temp = list.value ?: arrayListOf()
-            temp.add(EpisodeModel(episodeModel.name,episodeModel.episode))
+            temp.add(EpisodeModel(episodeModel.id, episodeModel.name, episodeModel.episode))
+            temp.sortBy {
+                it.id
+            }
             list.value = temp
         }, {
             AlertDialog.Builder(context).apply {
