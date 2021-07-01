@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:layoutDescription="@xml/activity_list_characters_scene"
     tools:context=".activity.ListCharactersActivity">
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
@@ -22,20 +23,21 @@
         style="@style/text_24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:paddingStart="16dp"
+        android:paddingTop="16dp"
         android:text="@string/characters"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="RtlSymmetry" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/character_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginHorizontal="8dp"
-        android:layout_marginTop="16dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title"
         app:spanCount="2"
         tools:listitem="@layout/character_recycler_view_item" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.motion.widget.MotionLayout>
