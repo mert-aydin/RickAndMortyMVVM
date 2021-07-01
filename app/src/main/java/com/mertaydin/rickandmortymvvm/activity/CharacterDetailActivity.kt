@@ -2,6 +2,7 @@ package com.mertaydin.rickandmortymvvm.activity
 
 import android.os.Bundle
 import android.view.View
+import android.view.View.GONE
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.ViewModelProvider
@@ -20,7 +21,6 @@ import java.util.*
 class CharacterDetailActivity : AppCompatActivity() {
 
     private lateinit var character: CharacterModel
-    private var isCollapsed = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +34,7 @@ class CharacterDetailActivity : AppCompatActivity() {
 
         val viewModel = ViewModelProvider(this, EpisodeViewModelFactory()).get(EpisodeViewModel::class.java)
 
-        arrow.setOnClickListener {
+        episode_tv.setOnClickListener {
             if (viewModel.list.value.isNullOrEmpty()) {
                 progress_bar.visibility = View.VISIBLE
                 character.episode?.forEach {
@@ -42,18 +42,14 @@ class CharacterDetailActivity : AppCompatActivity() {
                 }
 
                 viewModel.list.observe(this@CharacterDetailActivity, {
-                    if (episodes_recycler_view.adapter == null)
+                    if (it.size == character.episode!!.size) {
+                        progress_bar.visibility = GONE
                         episodes_recycler_view.adapter = EpisodeRecyclerViewAdapter(it)
-                    else
-                        episodes_recycler_view.adapter!!.notifyItemRangeInserted(viewModel.list.value!!.size, 1)
-
-                    if (it.size == character.episode!!.size)
-                        progress_bar.visibility = View.GONE
+                        episodes_recycler_view.toggle()
+                    }
                 })
-            }
-
-            isCollapsed = !isCollapsed
-            episodes_recycler_view.toggle()
+            } else
+                episodes_recycler_view.toggle()
         }
     }
 
@@ -66,8 +62,8 @@ class CharacterDetailActivity : AppCompatActivity() {
 
     private fun RecyclerView.toggle() {
         TransitionManager.beginDelayedTransition(this, null)
-        updateLayoutParams { height = if (isCollapsed) 1 else 0 }
-
-        arrow.animate().rotation(if (isCollapsed) 0F else 180F).start()
+        episodes_recycler_view.visibility = GONE - episodes_recycler_view.visibility
+        updateLayoutParams { height = 1 - height }
+        arrow.animate().rotation(180F - arrow.rotation).start()
     }
 }

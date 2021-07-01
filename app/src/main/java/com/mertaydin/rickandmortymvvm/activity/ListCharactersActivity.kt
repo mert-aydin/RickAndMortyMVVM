@@ -20,34 +20,25 @@ class ListCharactersActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_characters)
 
-        val viewModel =
-                ViewModelProvider(this, CharacterViewModelFactory()).get(CharacterViewModel::class.java)
-                        .apply {
-                            loadCharacters(this@ListCharactersActivity)
+        val viewModel = ViewModelProvider(this, CharacterViewModelFactory()).get(CharacterViewModel::class.java).apply {
+            loadCharacters(this@ListCharactersActivity)
 
-                            list.observe(this@ListCharactersActivity, {
-                                if (character_recycler_view.adapter == null)
-                                    character_recycler_view.adapter =
-                                            CharacterRecyclerViewAdapter(it).apply {
-                                                onItemClick = {
-                                                    println(it.toString())
-                                                    startActivity(
-                                                            Intent(
-                                                                    this@ListCharactersActivity,
-                                                                    CharacterDetailActivity::class.java
-                                                            ).putExtra(CHARACTER_KEY, it)
-                                                    )
-                                                }
-                                            }
-                                else
-                                    character_recycler_view.adapter!!.notifyItemRangeInserted(list.value!!.size, ITEM_PER_PAGE)
-                                progress_bar.visibility = View.GONE
-                            })
-
-                            shouldFinish.observe(this@ListCharactersActivity, {
-                                if (it) finish()
-                            })
+            list.observe(this@ListCharactersActivity, {
+                if (character_recycler_view.adapter == null)
+                    character_recycler_view.adapter = CharacterRecyclerViewAdapter(it).apply {
+                        onItemClick = {
+                            startActivity(Intent(this@ListCharactersActivity, CharacterDetailActivity::class.java).putExtra(CHARACTER_KEY, it))
                         }
+                    }
+                else
+                    character_recycler_view.adapter!!.notifyItemRangeInserted(list.value!!.size, ITEM_PER_PAGE)
+                progress_bar.visibility = View.GONE
+            })
+
+            shouldFinish.observe(this@ListCharactersActivity, {
+                if (it) finish()
+            })
+        }
 
         character_recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -55,6 +46,7 @@ class ListCharactersActivity : AppCompatActivity() {
                 if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
                     viewModel.next?.let {
                         progress_bar.visibility = View.VISIBLE
+                        layout.bringChildToFront(progress_bar)
                         viewModel.loadCharacters(recyclerView.context, it)
                     }
                 }

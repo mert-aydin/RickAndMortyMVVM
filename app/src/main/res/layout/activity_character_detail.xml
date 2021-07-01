@@ -10,15 +10,16 @@
         android:layout_height="match_parent"
         tools:context=".activity.CharacterDetailActivity">
 
-        <ProgressBar
+        <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:indeterminate="true"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/episode_tv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/episode_tv" />
 
         <ImageView
             android:id="@+id/close_button"
@@ -84,16 +85,6 @@
             android:background="@color/gray"
             app:layout_constraintTop_toBottomOf="@id/avatar" />
 
-        <TextView
-            android:id="@+id/episode_tv"
-            style="@style/text_16"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/episodes"
-            app:layout_constraintStart_toStartOf="@id/avatar"
-            app:layout_constraintTop_toBottomOf="@id/top_line" />
-
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/arrow"
             android:layout_width="wrap_content"
@@ -107,21 +98,36 @@
             app:layout_constraintEnd_toEndOf="parent"
             tools:ignore="ContentDescription" />
 
+        <TextView
+            android:id="@+id/episode_tv"
+            style="@style/text_16"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:paddingVertical="16dp"
+            android:paddingStart="16dp"
+            android:text="@string/episodes"
+            app:layout_constraintTop_toBottomOf="@id/top_line"
+            tools:ignore="RtlSymmetry" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/episodes_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="1dp"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="8dp"
+            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@id/episode_tv"
-            tools:listitem="@layout/episode_recycler_view_item" />
+            tools:layout_height="0dp"
+            tools:listitem="@layout/episode_recycler_view_item"
+            tools:visibility="visible" />
 
         <View
             android:id="@+id/bottom_line"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginVertical="16dp"
+            android:layout_marginVertical="8dp"
             android:background="@color/gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/episodes_recycler_view" />
