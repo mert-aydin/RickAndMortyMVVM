@@ -68,6 +68,6 @@ class CharacterDetailActivity : AppCompatActivity() {
         TransitionManager.beginDelayedTransition(this, null)
         updateLayoutParams { height = if (isCollapsed) 1 else 0 }
 
-        arrow.animate().rotation(if (isCollapsed) 180F else 0F).start()
+        arrow.animate().rotation(if (isCollapsed) 0F else 180F).start()
     }
 }
