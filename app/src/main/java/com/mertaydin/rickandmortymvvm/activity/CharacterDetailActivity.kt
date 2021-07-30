@@ -11,59 +11,63 @@ import androidx.transition.TransitionManager
 import com.bumptech.glide.Glide
 import com.mertaydin.rickandmortymvvm.R
 import com.mertaydin.rickandmortymvvm.adapter.EpisodeRecyclerViewAdapter
+import com.mertaydin.rickandmortymvvm.databinding.ActivityCharacterDetailBinding
 import com.mertaydin.rickandmortymvvm.model.CharacterModel
 import com.mertaydin.rickandmortymvvm.util.Constants.Companion.CHARACTER_KEY
 import com.mertaydin.rickandmortymvvm.util.EpisodeViewModelFactory
 import com.mertaydin.rickandmortymvvm.viewmodel.EpisodeViewModel
-import kotlinx.android.synthetic.main.activity_character_detail.*
 import java.util.*
 
 class CharacterDetailActivity : AppCompatActivity() {
 
+    private lateinit var bindind: ActivityCharacterDetailBinding
     private lateinit var character: CharacterModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_character_detail)
+        bindind = ActivityCharacterDetailBinding.inflate(layoutInflater)
+        setContentView(bindind.root)
 
         character = intent.getParcelableExtra(CHARACTER_KEY)!!
 
-        close_button.setOnClickListener { finish() }
+        bindind.closeButton.setOnClickListener { finish() }
 
         initViews()
 
-        val viewModel = ViewModelProvider(this, EpisodeViewModelFactory()).get(EpisodeViewModel::class.java)
+        val viewModel =
+            ViewModelProvider(this, EpisodeViewModelFactory()).get(EpisodeViewModel::class.java)
 
-        episode_tv.setOnClickListener {
+        bindind.episodeTv.setOnClickListener {
             if (viewModel.list.value.isNullOrEmpty()) {
-                progress_bar.visibility = View.VISIBLE
+                bindind.progressBar.visibility = View.VISIBLE
                 character.episode?.forEach {
                     viewModel.loadEpisodes(this@CharacterDetailActivity, it)
                 }
 
                 viewModel.list.observe(this@CharacterDetailActivity, {
                     if (it.size == character.episode!!.size) {
-                        progress_bar.visibility = GONE
-                        episodes_recycler_view.adapter = EpisodeRecyclerViewAdapter(it)
-                        episodes_recycler_view.toggle()
+                        bindind.progressBar.visibility = GONE
+                        bindind.episodesRecyclerView.adapter = EpisodeRecyclerViewAdapter(it)
+                        bindind.episodesRecyclerView.toggle()
                     }
                 })
             } else
-                episodes_recycler_view.toggle()
+                bindind.episodesRecyclerView.toggle()
         }
     }
 
     private fun initViews() {
-        character_name.text = character.name
-        Glide.with(this).load(character.image).into(avatar)
-        status_and_species.text = getString(R.string.status_and_species, character.status, character.species)
-        character_gender.text = character.gender
+        bindind.characterName.text = character.name
+        Glide.with(this).load(character.image).into(bindind.avatar)
+        bindind.statusAndSpecies.text =
+            getString(R.string.status_and_species, character.status, character.species)
+        bindind.characterGender.text = character.gender
     }
 
     private fun RecyclerView.toggle() {
         TransitionManager.beginDelayedTransition(this, null)
-        episodes_recycler_view.visibility = GONE - episodes_recycler_view.visibility
+        bindind.episodesRecyclerView.visibility = GONE - bindind.episodesRecyclerView.visibility
         updateLayoutParams { height = 1 - height }
-        arrow.animate().rotation(180F - arrow.rotation).start()
+        bindind.arrow.animate().rotation(180F - bindind.arrow.rotation).start()
     }
 }
