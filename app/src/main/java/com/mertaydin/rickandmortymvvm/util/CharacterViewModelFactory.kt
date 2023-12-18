@@ -6,7 +6,7 @@ import com.mertaydin.rickandmortymvvm.viewmodel.CharacterViewModel
 
 class CharacterViewModelFactory : ViewModelProvider.Factory {
 
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return if (modelClass.isAssignableFrom(CharacterViewModel::class.java))
             CharacterViewModel() as T
         else

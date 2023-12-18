@@ -30,8 +30,8 @@ class EpisodeRecyclerViewAdapter(private val dataSet: ArrayList<EpisodeModel>) :
             binding.episodeName.text = binding.episodeName.context.getString(
                 R.string.episode_name,
                 episodeModel.name,
-                episodeModel.episode!!.substring(0, 3),
-                episodeModel.episode.substring(3)
+                episodeModel.episode?.substring(0, 3),
+                episodeModel.episode?.substring(3)
             )
         }
     }

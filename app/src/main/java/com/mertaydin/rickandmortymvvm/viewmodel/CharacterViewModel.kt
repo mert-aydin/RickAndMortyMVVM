@@ -22,9 +22,9 @@ class CharacterViewModel : ViewModel() {
     fun loadCharacters(context: Context, url: String = API_URL) {
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, url, {
             val json: CharacterModelHolder = Gson().fromJson(it, CharacterModelHolder::class.java)
-            next = json.info!!.next
+            next = json.info?.next
             val temp = list.value ?: arrayListOf()
-            json.results!!.forEach {
+            json.results?.forEach {
                 temp.add(it)
             }
             list.value = temp

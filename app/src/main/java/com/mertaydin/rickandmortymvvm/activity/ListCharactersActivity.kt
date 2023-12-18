@@ -23,12 +23,15 @@ class ListCharactersActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val viewModel =
-            ViewModelProvider(this, CharacterViewModelFactory()).get(CharacterViewModel::class.java)
+            ViewModelProvider(this, CharacterViewModelFactory())[CharacterViewModel::class.java]
                 .apply {
                     loadCharacters(this@ListCharactersActivity)
 
-                    list.observe(this@ListCharactersActivity, {
-                        if (binding.characterRecyclerView.adapter == null)
+                    list.observe(this@ListCharactersActivity) {
+                        binding.characterRecyclerView.adapter?.notifyItemRangeInserted(
+                            list.value!!.size,
+                            ITEM_PER_PAGE
+                        ) ?: run {
                             binding.characterRecyclerView.adapter =
                                 CharacterRecyclerViewAdapter(it).apply {
                                     onItemClick = {
@@ -40,17 +43,14 @@ class ListCharactersActivity : AppCompatActivity() {
                                         )
                                     }
                                 }
-                        else
-                            binding.characterRecyclerView.adapter!!.notifyItemRangeInserted(
-                                list.value!!.size,
-                                ITEM_PER_PAGE
-                            )
-                        binding.progressBar.visibility = View.GONE
-                    })
+                        }
 
-                    shouldFinish.observe(this@ListCharactersActivity, {
+                        binding.progressBar.visibility = View.GONE
+                    }
+
+                    shouldFinish.observe(this@ListCharactersActivity) {
                         if (it) finish()
-                    })
+                    }
                 }
 
         binding.characterRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
