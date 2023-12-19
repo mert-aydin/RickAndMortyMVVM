@@ -22,36 +22,33 @@ class ListCharactersActivity : AppCompatActivity() {
         binding = ActivityListCharactersBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val viewModel =
-            ViewModelProvider(this, CharacterViewModelFactory())[CharacterViewModel::class.java]
-                .apply {
-                    loadCharacters(this@ListCharactersActivity)
+        val viewModel = ViewModelProvider(
+            this, CharacterViewModelFactory()
+        )[CharacterViewModel::class.java].apply {
+            loadCharacters(this@ListCharactersActivity)
 
-                    list.observe(this@ListCharactersActivity) {
-                        binding.characterRecyclerView.adapter?.notifyItemRangeInserted(
-                            list.value!!.size,
-                            ITEM_PER_PAGE
-                        ) ?: run {
-                            binding.characterRecyclerView.adapter =
-                                CharacterRecyclerViewAdapter(it).apply {
-                                    onItemClick = {
-                                        startActivity(
-                                            Intent(
-                                                this@ListCharactersActivity,
-                                                CharacterDetailActivity::class.java
-                                            ).putExtra(CHARACTER_KEY, it)
-                                        )
-                                    }
-                                }
+            list.observe(this@ListCharactersActivity) {
+                binding.characterRecyclerView.adapter?.notifyItemRangeInserted(
+                    list.value!!.size, ITEM_PER_PAGE
+                ) ?: run {
+                    binding.characterRecyclerView.adapter = CharacterRecyclerViewAdapter(it).apply {
+                        onItemClick = {
+                            startActivity(
+                                Intent(
+                                    this@ListCharactersActivity, CharacterDetailActivity::class.java
+                                ).putExtra(CHARACTER_KEY, it)
+                            )
                         }
-
-                        binding.progressBar.visibility = View.GONE
-                    }
-
-                    shouldFinish.observe(this@ListCharactersActivity) {
-                        if (it) finish()
                     }
                 }
+
+                binding.progressBar.visibility = View.GONE
+            }
+
+            shouldFinish.observe(this@ListCharactersActivity) {
+                if (it) finish()
+            }
+        }
 
         binding.characterRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {

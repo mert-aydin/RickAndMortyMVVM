@@ -9,9 +9,10 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.gson.Gson
 import com.mertaydin.rickandmortymvvm.R
-import com.mertaydin.rickandmortymvvm.model.CharacterModelHolder
 import com.mertaydin.rickandmortymvvm.model.CharacterModel
+import com.mertaydin.rickandmortymvvm.model.CharacterModelHolder
 import com.mertaydin.rickandmortymvvm.util.Constants.Companion.API_URL
+import com.mertaydin.rickandmortymvvm.util.NetworkIdlingResource
 
 class CharacterViewModel : ViewModel() {
 
@@ -21,13 +22,14 @@ class CharacterViewModel : ViewModel() {
 
     fun loadCharacters(context: Context, url: String = API_URL) {
         Volley.newRequestQueue(context).add(StringRequest(Request.Method.GET, url, {
-            val json: CharacterModelHolder = Gson().fromJson(it, CharacterModelHolder::class.java)
+            val json = Gson().fromJson(it, CharacterModelHolder::class.java)
             next = json.info?.next
             val temp = list.value ?: arrayListOf()
             json.results?.forEach {
                 temp.add(it)
             }
             list.value = temp
+            NetworkIdlingResource.isIdle = true
         }, {
             AlertDialog.Builder(context).apply {
                 setTitle(context.getString(R.string.character_fetch_failed))
