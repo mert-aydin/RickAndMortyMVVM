@@ -58,14 +58,14 @@ class EspressoTest {
         )
         saveScreenshot()
         pressBack()
+
         /**
+         * Failing test case example
          * If the test fails it'll automatically save screenshot of last state of the application.
          * /storage/emulated/0/Android/media/com.mertaydin.rickandmortymvvm/additional_test_output
          */
 
-        /**
-         * Failing case example
-         *//*
+        /*
         position = 150
         onView(withId(R.id.character_recycler_view)).perform(
             RecyclerViewActions.scrollToPosition<CharacterRecyclerViewAdapter.CharacterViewHolder>(
